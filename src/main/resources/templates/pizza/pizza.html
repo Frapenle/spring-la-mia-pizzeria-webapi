@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
+<link th:rel="stylesheet" th:href="@{/css/style.css}"/>
+<title>Pizza dettaglio</title>
+</head>
+<body>
+	<header th:replace="~{fragments/header :: header}"></header>
+	<main class="container" th:object=${pizza}>
+		<div>
+			<h4 class="mb-3 text-center">Dettagli della pizza [[ *{name} ]]</h4>
+			<div class="row align-items-center mb-3">
+				<div class="col-md-6">
+						<p><span class="fw-bold">Nome: </span>[[ *{name} ]]</p>
+						<p><span class="fw-bold">Descrizione: </span>[[ *{description}]]</p>
+						<div class="mb-3">
+							<span class="fw-bold">Prezzo: </span>
+							<span th:if="${pizza.specialOffers.size() > 0}" class="text-decoration-line-through td-thickness" th:text=" | ${pizza.price}&euro;|" ></span>
+							<span th:unless="${pizza.specialOffers.size() > 0}" class="" th:text=" | ${pizza.price}&euro;|" ></span>
+						</div>
+						
+						<div class=mb-5>
+							<span th:if="${pizza.specialOffers.size() > 0}" class="fw-bold">Prezzo scontato: </span>
+							<span class="text-success fw-bold" th:if="${pizza.getDiscountedPrice(specialOffers) != pizza.price}" th:text="${pizza.getDiscountedPrice(specialOffers)} + '€'"></span>
+						</div>
+						<h4 th:if="${pizza.specialOffers.size() > 0}" class="text-danger">--> Offerte &lt;-- </h4>
+						<div class="row gy-3 align-items-center" th:each="spo : ${specialOffers}" th:if="${spo.pizza.id == pizza.id}" >
+							<div class="col-8">
+								<span class="fw-bold">Nome: </span>		
+								<span class="text-success fw-bold" th:text="| ${spo.name}|"></span>
+								<span class="fw-bold">&nbsp;-->&nbsp;Percentuale sconto: </span>	
+								<span class="text-success fw-bold" th:text="| ${spo.discount}%|"></span>
+							</div>
+							<div class="col-4">
+								<a sec:authorize="hasAuthority('ADMIN')" th:href="@{'/offer/edit/' + ${spo.id}}" class="btn btn-small btn-light">Modifica</a>
+							</div>
+							<br>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="text-center">
+							<p><span class="fw-bold">Foto</span></p>
+							<img class="img-fluid" th:alt="|*{name} image|" th:src="*{imageUrl}">
+						</div>
+					</div>
+				</div>
+			<div class="d-flex justify-content-between">
+				<a sec:authorize="hasAuthority('ADMIN')" th:href="@{'/admin/pizze/update/' + ${pizza.id}}" class="btn btn-warning">Modifica</a>
+				<a th:href="@{/user}" class="ms-auto btn btn-outline-primary">Esci</a>
+			</div>
+		</div>
+	</main>
+
+	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

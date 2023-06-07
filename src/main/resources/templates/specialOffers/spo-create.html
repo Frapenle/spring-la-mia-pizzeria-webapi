@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:rel="stylesheet"
+	th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
+<link th:rel="stylesheet" th:href="@{/css/style.css}" />
+<title>Crea offerta</title>
+</head>
+<body>
+	<div class="container">
+		<h3 class="text-center mt-3">Crea offerta</h3>
+		<main class="mt-5">
+
+			<div class="" th:object="${specialOffer}">
+				<form method="post" th:action="@{/offer/create}">
+					<div class="mb-3">
+						<input type="text" name="pizza" th:value="${pizza.id}" hidden>
+						<label for="name" class="form-label">Nome</label>
+						<input type="text" class="form-control" id="name" name="name" th:value="*{name}">
+				
+					</div>
+					<div class="mb-3">
+						<label for="startDate" class="form-label">Data inizio</label>
+						<input type="date" class="form-control" id="startDate" name="startDate"
+							th:value="*{startDate}">
+					
+					</div>
+					<div class="mb-3">
+						<label for="endDate" class="form-label">Data fine</label>
+						<input type="date" class="form-control" id="endDate" name="endDate" th:value="*{endDate}">
+					
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="discount">Sconto</label>
+						<input type="number" class="form-control" id="discount" name="discount" th:value="*{discount}">
+					</div>
+					<div class="d-flex justify-content-between">
+						<button type="submit" class="btn btn-primary">Salva</button>
+						<a th:href="@{/admin}" class="btn btn-outline-primary">Esci</a>
+					</div>
+
+				</form>
+			</div>
+		</main>
+	</div>
+</body>
+</html>

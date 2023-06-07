@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
+<link th:rel="stylesheet" th:href="@{/css/style.css}"/>
+<title>Pizza index</title>
+</head>
+<body>
+	<header th:replace="~{fragments/header :: header}"></header>
+	<main class="container">
+		<div th:if="${pizze.size() > 0}">
+			<div>
+				<ul class="list-group">
+					<li class="list-group-item d-flex justify-content-between w-100 align-items-center" th:each="pizza : ${pizze}">
+						<div>
+							<a class="text-decoration-none" th:href="@{'user/pizza/' + ${pizza.id}}"
+								th:text="${pizza.id + ' - ' + pizza.name}">
+							</a>
+							<small class="">[[${ pizza.description}]]</small>
+							<span th:if="${pizza.specialOffers.size() > 0}" class="text-end text-decoration-line-through td-thickness" th:text=" | ${pizza.price}&euro;|" ></span>
+							<span th:unless="${pizza.specialOffers.size() > 0}" class="text-end" th:text=" | ${pizza.price}&euro;|" ></span>
+							<span class="text-success fw-bold" th:if="${pizza.getDiscountedPrice(specialOffers) != pizza.price}" th:text="${pizza.getDiscountedPrice(specialOffers)} + '€'"></span>
+						</div>
+						<div>
+							<a sec:authorize="hasAuthority('ADMIN')"th:if="${pizza.specialOffers.size() > 0}" th:href="@{'user/pizze/' + ${pizza.id}}" class="btn btn-light">Modifica offerta</a>
+							<a sec:authorize="hasAuthority('ADMIN')" th:href="@{'admin/pizze/' + ${pizza.id} + '/create'}" class="btn btn-danger">Aggiungi offerta</a>
+							<a sec:authorize="hasAuthority('ADMIN')" th:href="@{'admin/pizze/update/' + ${pizza.id}}" class="btn btn-warning">Modifica</a>
+							<a sec:authorize="hasAuthority('ADMIN')" th:href="@{'admin/pizze/delete/' + ${pizza.id}}" class="btn btn-dark">Elimina</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div th:if="${pizze.size() == 0}">
+			<p>Non sono presenti pizze.</p>
+		</div>
+		<div class="d-flex justify-content-end mt-3 gap-3">
+			<a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/ingredients/create}" class="btn btn-outline-success btn-lg">Aggiungi ingrediente</a>
+			<a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/pizze/create}" class="btn btn-success btn-lg">Aggiungi pizza</a>
+		</div>
+	</main>
+	<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

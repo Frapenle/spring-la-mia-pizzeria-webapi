@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:rel="stylesheet"
+	th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
+<link th:rel="stylesheet" th:href="@{/css/style.css}" />
+<title>Modifica Pizza</title>
+</head>
+<body>
+	<div class="container">
+		<h3 class="text-center mt-3">Modifica [[${pizza.name}]]</h3>
+		<main class="mt-5">
+
+			<div class="">
+				<div th:fragment="form">
+					<div class="mb-3">
+						<label for="name" class="form-label">Nome</label>
+						<input type="text" class="form-control" id="name" name="name" th:value="*{name}">
+						<small class="text-danger" th:if="${errors != null && errors.hasFieldErrors('name')}">
+							[[ ${errors.getFieldError('name').defaultMessage} ]]
+						</small>
+					</div>
+					<div class="mb-3">
+						<label for="description" class="form-label">Descrizione</label>
+						<textarea class="form-control" id="description" name="description"
+							th:text="*{description}" rows="3"></textarea>
+						<small class="text-danger" th:if="${errors != null && errors.hasFieldErrors('description')}">
+							[[ ${errors.getFieldError('description').defaultMessage} ]]
+						</small>
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="price">Prezzo</label>
+						<input type="number" class="form-control" step="0.1" id="price" name="price" th:value="*{price}">
+						<small class="text-danger" th:if="${errors != null && errors.hasFieldErrors('price')}">
+							[[ ${errors.getFieldError('price').defaultMessage} ]]
+						</small>
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="imageUrl">Link immagine</label>
+						<input type="text" class="form-control" id="imageUrl" name="imageUrl" th:value="*{imageUrl}">
+						<small class="text-danger" th:if="${errors != null && errors.hasFieldErrors('imageUrl')}">
+							[[ ${errors.getFieldError('imageUrl').defaultMessage}]]
+						</small>
+					</div>
+						
+					<div class="d-flex gap-1" th:unless="${pizza.isNewPizza}">
+					    <div class="mb-3 me-3" th:each="ingredient : ${ingredients}" th:object="${ingredient}">
+					        <input th:id="${'ingredient-' + ingredient.id}" th:value="*{id}"
+					            type="checkbox" name="ingredients">
+					        <label th:for="${'ingredient-' + ingredient.id}">[[*{name}]]</label>
+					    </div>
+					</div>
+					
+					<div class="d-flex gap-1" th:if="${pizza.isNewPizza}">
+					    <div class="mb-3 me-3" th:each="ingredient : ${ingredients}" th:object="${ingredient}">
+					        <input th:id="${'ingredient-' + ingredient.id}" th:value="*{id}"
+					        		th:checked="${pizza.ingredients.contains(ingredient)}"
+					        		type="checkbox" name="ingredients">
+					        <label th:for="${'ingredient-' + ingredient.id}">[[*{name}]]</label>
+					    </div>
+					</div>
+					
+				</div>
+			</div>
+		</main>
+	</div>
+</body>
+</html>
