@@ -18,8 +18,8 @@ public class AuthConfiguration {
 		@Bean
 		SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		    
-			return 
-				http.authorizeHttpRequests(a -> a
+			return http.csrf(c-> c.disable())
+						.authorizeHttpRequests(a -> a
 				        .requestMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
 				        .requestMatchers("/pizza/**").hasAnyAuthority("USER", "ADMIN")
 				        .requestMatchers("/admin/**").hasAuthority("ADMIN")

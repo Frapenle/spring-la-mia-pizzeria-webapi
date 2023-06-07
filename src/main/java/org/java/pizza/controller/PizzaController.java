@@ -61,7 +61,6 @@ public class PizzaController {
 	public String getPizzaByName(Model model, @RequestParam(required = false) String name) {
 		List<Pizza> pizze = pizzaService.findByName(name);
 		List<SpecialOffer> specialOffers = specialOfferService.findAll();
-		System.err.println(pizze);
 		model.addAttribute("pizze", pizze);
 		model.addAttribute("specialOffers", specialOffers);
 		model.addAttribute("name", name);
