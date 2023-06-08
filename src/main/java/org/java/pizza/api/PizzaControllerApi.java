@@ -3,14 +3,11 @@ package org.java.pizza.api;
 import java.util.List;
 import java.util.Optional;
 
-import org.java.pizza.pojo.Ingredient;
 import org.java.pizza.pojo.Pizza;
-import org.java.pizza.service.IngredientService;
 import org.java.pizza.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,6 +47,9 @@ public class PizzaControllerApi {
 	@GetMapping("/pizze/{id}")
 	public ResponseEntity<Pizza> show(@PathVariable("id") Integer id) {
 	    Optional<Pizza> optionalPizza = pizzaService.findById(id);
+	    if(optionalPizza.isEmpty()) {
+	    	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
 	    Pizza pizza = optionalPizza.get();
 	    return new ResponseEntity<>(pizza, HttpStatus.OK);
 	}
